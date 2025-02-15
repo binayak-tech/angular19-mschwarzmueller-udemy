@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { USERS } from '../../entity/users';
+import { Component, computed, EventEmitter, input, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-user',
@@ -8,17 +7,25 @@ import { USERS } from '../../entity/users';
   styleUrl: './user.component.css'
 })
 export class UserComponent {
-  selectedUser = USERS[this.randomUser()];
+  @Input({ required: true }) id !: string;
+  @Input({ required: true }) avatar !: string;
+  @Input({ required: true }) name !: string;
+  @Output() select = new EventEmitter<string>();
 
   get imagePath() {
-    return 'assets/users/' + this.selectedUser.avatar;
+    return `assets/users/${this.avatar}`;
   }
 
-  randomUser() {
-    return Math.floor(Math.random() * USERS.length);
-  }
-  
-  onSelectUser(user: any) {
-    this.selectedUser = USERS[this.randomUser()];
+  // USING SIGNALS
+  // id = input.required<string>();
+  // avatar = input.required<string>();
+  // name = input.required<string>();
+  // select = output<string>();
+
+  // imagePath = computed(() => `assets/users/${this.avatar()`
+  // });
+
+  onSelectUser() {
+    this.select.emit(this.id);
   }
 }
